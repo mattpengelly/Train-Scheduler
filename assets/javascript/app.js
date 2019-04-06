@@ -58,10 +58,13 @@ var trainScheduler = {
                 newRow.append("<td class='text-center'>" + minAway + "</td>");
                 newRow.append("<td class='delete-button'>X</td>");
 
-
                 $("#train-list").append(newRow);
 
             });
+
+            $(".currTime").empty();
+            $(".currTime").append(moment().format('hh:mm'));
+
         })
     },
 

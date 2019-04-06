@@ -3,3 +3,30 @@
 opacity: 0;
 
 }
+
+.delete-button:hover {
+
+opacity: 1 !important;
+
+}
+
+.trains:hover 
+
+.delete-button {
+
+opacity: .5;
+
+}
+
+.currTime {
+
+font-family: 'Orbitron', sans-serif;
+
+}
+
+.jumbotron {
+
+padding-top: 5px;
+padding-bottom: 5px;
+
+}

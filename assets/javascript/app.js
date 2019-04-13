@@ -78,7 +78,7 @@ var trainScheduler = {
             if ($('#train-list>tr.arrived').length !== 0) {
 
                 // console.log("A TRAIN IS FREAKING HERE!!!");
-                var audio = new Audio("../assets/sounds/ding-dong.wav");
+                var audio = new Audio("./assets/sounds/ding-dong.wav");
                 console.log(audio);
                 audio.play();
 

@@ -56,6 +56,9 @@ padding-bottom: 5px;
 font-weight: bolder;
 background: black;
 color: gold;
+border-color: #444444 !important;
+border-radius: 10px;
+border-width: 10px;
 
 }
 

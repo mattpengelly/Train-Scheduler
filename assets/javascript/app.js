@@ -35,7 +35,7 @@ var trainScheduler = {
         });
     },
 
-    writeRows: function (snapshot) {
+    writeRows: function () {
 
         database.ref().on("value", function (snapshot) {
             $("tr").remove(".trains");
@@ -45,7 +45,7 @@ var trainScheduler = {
                 // console.log(snapshot.val());
 
                 var key = child.key;
-                console.log("Key = " + key);
+                // console.log("Key = " + key);
 
                 var name = child.val().name;
                 var destination = child.val().destination;
@@ -60,6 +60,11 @@ var trainScheduler = {
                 newRow.append("<td class='text-center'>" + next + "</td>");
                 newRow.append("<td class='text-center'>" + minAway + "</td>");
                 newRow.append("<td class='delete-button'data-trainkey='" + key + "'>X</td>");
+                if (minAway === 0) {
+                    newRow.addClass("arrived");
+                } else if (minAway < 4) {
+                    newRow.addClass("soon");
+                };
 
 
                 $("#train-list").append(newRow);
@@ -69,6 +74,16 @@ var trainScheduler = {
             $(".currTime").empty();
             $(".currTime").append(moment().format('hh:mm'));
 
+
+            if ($('#train-list>tr.arrived').length !== 0) {
+
+                // console.log("A TRAIN IS FREAKING HERE!!!");
+                var audio = new Audio("/assets/sounds/ding-dong.wav");
+                // console.log(audio);
+                audio.play();
+
+            }
+
         })
     },
 
@@ -76,11 +91,11 @@ var trainScheduler = {
 
         console.log("deleteTrain was called");
         console.log(event);
-        
+
 
         key = event.target.dataset.trainkey;
         console.log("Delete Train Key = " + key);
-        // database.ref(key).remove();
+        database.ref(key).remove();
 
     },
 
@@ -126,29 +141,37 @@ var trainScheduler = {
 
         // First Time (pushed back 1 year to make sure it comes before current time)
         var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
-        console.log("firstTimeConverted:  " + firstTimeConverted);
+        // console.log("firstTimeConverted:  " + firstTimeConverted);
 
         // Current Time
         var currentTime = moment();
-        console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+        // console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
 
         // Difference between the times
         var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-        console.log("DIFFERENCE IN TIME: " + diffTime);
+        // console.log("DIFFERENCE IN TIME: " + diffTime);
 
         // Time apart (remainder)
         var tRemainder = diffTime % tFrequency;
-        console.log(tRemainder);
+        // console.log(tRemainder);
 
         // Minute Until Train
         var tMinutesTillTrain = tFrequency - tRemainder;
-        console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+        // console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
 
         // Next Train
         var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-        console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+        // console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
-        return [tMinutesTillTrain, moment(nextTrain).format("hh:mm")];
+        if (tRemainder === 0) {
+
+            return [0, "ARRIVED"];
+
+        } else {
+
+            return [tMinutesTillTrain, moment(nextTrain).format("hh:mm")];
+
+        }
     }
 };
 

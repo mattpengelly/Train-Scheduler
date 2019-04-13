@@ -44,6 +44,9 @@ var trainScheduler = {
                 // console.log("writeRows called");
                 // console.log(snapshot.val());
 
+                var key = child.key;
+                console.log("Key = " + key);
+
                 var name = child.val().name;
                 var destination = child.val().destination;
                 var frequency = child.val().frequency;
@@ -56,7 +59,8 @@ var trainScheduler = {
                 newRow.append("<td class='text-center'>" + frequency + "</td>");
                 newRow.append("<td class='text-center'>" + next + "</td>");
                 newRow.append("<td class='text-center'>" + minAway + "</td>");
-                newRow.append("<td class='delete-button'>X</td>");
+                newRow.append("<td class='delete-button'data-trainkey='" + key + "'>X</td>");
+
 
                 $("#train-list").append(newRow);
 
@@ -66,6 +70,18 @@ var trainScheduler = {
             $(".currTime").append(moment().format('hh:mm'));
 
         })
+    },
+
+    deleteTrain: function (event) {
+
+        console.log("deleteTrain was called");
+        console.log(event);
+        
+
+        key = event.target.dataset.trainkey;
+        console.log("Delete Train Key = " + key);
+        // database.ref(key).remove();
+
     },
 
     calcTimes: function (tFrequency, firstTime) {
@@ -146,8 +162,13 @@ $(document).ready(function () {
         trainScheduler.addTrain(event);
     });
 
+    $(document).on("click", ".delete-button", function (event) {
+        console.log("Delete was clicked");
+        trainScheduler.deleteTrain(event);
+    });
+
     database.ref().on("value", trainScheduler.writeRows);
 
-    var updater = setInterval(trainScheduler.writeRows, 60000);
+    var updater = setInterval(trainScheduler.writeRows, 15000);
 
 })

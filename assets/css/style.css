@@ -1,14 +1,34 @@
 .delete-button {
 
 opacity: 0;
+background-color: black;
+color: #ff0000;
+width: 1em;
+height: 1em;
+/* border-color: red;
+border-radius: 5em; */
+padding: 0;
+font-style: bold;
+font-size: 1em;
 
 }
 
 .delete-button:hover {
 
 opacity: 1 !important;
+box-shadow: 6px 6px 3px #999;
 
 }
+
+.delete-button:active {
+
+    box-shadow: 3px 3px 2px #666;
+    transform: translateY(2px);
+    transform: translateX(2px);
+
+  }
+
+/* .delete-button: */
 
 .trains:hover 
 
